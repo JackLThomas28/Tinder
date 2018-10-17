@@ -1,6 +1,3 @@
-import json
-from bs4 import BeautifulSoup
-import lxml.html
 import nltk
 import requests
 import FB_Auth_Token
