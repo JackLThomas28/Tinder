@@ -1,15 +1,23 @@
 import nltk
 import requests
 import FB_Auth_Token
-import credentials
+import MyCredentials as credentials
+import json
+from pprint import pprint
+import time
 
 HOST_URL = 'https://api.gotinder.com/'
 HEADERS = {
-    'app_version': '6.9.4',
-    'platform': 'ios',
-    "content-type": "application/json",
-    "User-agent": "Tinder/7.5.3 (iPhone; iOS 10.3.2; Scale/2.00)",
-    "Accept": "application/json"
+    'Origin': 'https://tinder.com',
+    'app-version': '1020317',
+    'User-Agent': 'Mozilla/5.0 (Macintosh; Intel Mac OS X 10_14_0) AppleWebKit/537.36 (KHTML, like Gecko) Chrome/69.0.3497.100 Safari/537.36',
+    'Accept': 'application/json',
+    'platform': 'web',
+    'DNT': '1',
+    'x-supported-image-formats': 'webp,jpeg',
+    'Referer': 'https://tinder.com',
+    'Accept-Encoding': 'gzip, deflate, br',
+    'Accept-Language': 'en-US,en;q=0.9'
 }
 STATUS_CODE = 0
 JSON = 1
@@ -29,13 +37,70 @@ def main():
     if rec_response[STATUS_CODE] is not OK_200:
         print('error getting recommendations:', rec_response[STATUS_CODE])
     else:
-        print(rec_response[JSON])
-        for result in rec_response[JSON]['data']['results']:
-            print(result['user']['_id'])
+        oldProfiles = loadBios()
+        newProfiles = collectProfileInfo(rec_response[JSON])
+        latest_response = likeProfiles(newProfiles, this_session)
+        oldProfiles += newProfiles
+        while True:
+            while latest_response[JSON]['likes_remaining'] > 0 or latest_response is None:
+                rec_response = get_recs_v2(this_session)
+                newProfiles = collectProfileInfo(rec_response[JSON])
+                latest_response = likeProfiles(newProfiles, this_session)
+                oldProfiles += newProfiles
+            ### Sleep for 12 hours; When more likes are available again
+            time.sleep(60*60*12)
+        saveBios(oldProfiles)
+
+
+def collectProfileInfo(response):
+    data = []
+    for result in response['data']['results']:
+        user = {}
+        user['id'] = result['user']['_id']
+        user['bio'] = result['user']['bio']
+        user['birth_date'] = result['user']['birth_date']
+        user['name'] = result['user']['name']
+        user['gender'] = result['user']['gender']
+        user['jobs'] = result['user']['jobs']
+        user['schools'] = result['user']['schools']
+        user['common_interests'] = result['facebook']['common_interests']
+        user['distance_mi'] = result['distance_mi']
+        data.append(user)
+    return data
+
+
+def passOnProfiles(profiles, session):
+    for profile in profiles:
+        dislike(session, profile['id'])
+
+
+def likeProfiles(profiles, session):
+    last_response = None
+    for profile in profiles:
+        response = like(session, profile['id'])
+        if response[STATUS_CODE] is not OK_200:
+            pprint(response[JSON])
+            return response
+        if response[JSON]['likes_remaining'] == 0:
+            return response
+        last_response = response
+    return last_response
+
+
+def loadBios():
+    data = None
+    with open('GirlsTinderProfiles.json', 'r') as infile:
+        data = json.load(infile)
+    return data
+
+
+def saveBios(data):
+    with open('GirlsTinderProfiles.json', 'w') as outfile:
+        json.dump(data, outfile)
 
 
 def login(session):
-    creds = credentials.getFrankCredentials()
+    creds = credentials.getMyCredentials()
     fb_access_token = FB_Auth_Token.get_fb_access_token(creds[0], creds[1])
     fb_access_id = FB_Auth_Token.get_fb_id(fb_access_token)
     data = {'facebook_token': fb_access_token, 'facebook_id': fb_access_id}
@@ -64,12 +129,13 @@ def get_recs_v2(session):
 
 
 def like(session, profile_id):
-    response = session.get(HOST_URL + 'like/' + profile_id, headers=HEADERS)
-    return response.status_code, response.json()
+    response = session.get(HOST_URL + 'like/' + profile_id + '?locale=en-US&s_number=628218027', headers=HEADERS)
+    print(profile_id)
+    return response.status_code, json.loads(response.text)
 
 
 def dislike(session, profile_id):
-    response = session.get(HOST_URL + 'pass/' + profile_id, headers=HEADERS)
+    response = session.get(HOST_URL + 'pass/' + profile_id + '?locale=en-US&s_number=628218027' , headers=HEADERS)
     return response.status_code, response.json()
 
 
