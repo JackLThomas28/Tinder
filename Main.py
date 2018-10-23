@@ -48,8 +48,8 @@ def main():
                 latest_response = likeProfiles(newProfiles, this_session)
                 oldProfiles += newProfiles
             ### Sleep for 12 hours; When more likes are available again
+            saveBios(oldProfiles)
             time.sleep(60*60*12)
-        saveBios(oldProfiles)
 
 
 def collectProfileInfo(response):
@@ -129,6 +129,7 @@ def get_recs_v2(session):
 
 
 def like(session, profile_id):
+    print('here')
     response = session.get(HOST_URL + 'like/' + profile_id + '?locale=en-US&s_number=628218027', headers=HEADERS)
     print(profile_id)
     return response.status_code, response.json()
