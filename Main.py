@@ -22,6 +22,7 @@ HEADERS = {
 STATUS_CODE = 0
 JSON = 1
 OK_200 = 200
+TOO_MANY_REQUESTS_429 = 429
 
 
 def main():
@@ -79,7 +80,9 @@ def likeProfiles(profiles, session):
     last_response = None
     for profile in profiles:
         response = like(session, profile['id'])
-        if response[STATUS_CODE] is not OK_200:
+        if response[STATUS_CODE] is TOO_MANY_REQUESTS_429:
+            time.sleep(60)
+        if response[STATUS_CODE] is not OK_200 and is not TOO_MANY_REQUESTS_429:
             pprint(response[JSON])
             return response
         if response[JSON]['likes_remaining'] == 0:
@@ -132,7 +135,8 @@ def get_recs_v2(session):
 def like(session, profile_id):
     response = session.get(HOST_URL + 'like/' + profile_id + '?locale=en-US&s_number=628218027', headers=HEADERS)
     print(profile_id)
-    pprint(response)
+    if response.status_code == 429:
+        return response.status_code, None
     return response.status_code, response.json()
 
 
