@@ -82,7 +82,7 @@ def likeProfiles(profiles, session):
         response = like(session, profile['id'])
         if response[STATUS_CODE] is TOO_MANY_REQUESTS_429:
             time.sleep(60)
-        if response[STATUS_CODE] is not OK_200 and is not TOO_MANY_REQUESTS_429:
+        if response[STATUS_CODE] is not OK_200 and response[STATUS_CODE] is not TOO_MANY_REQUESTS_429:
             pprint(response[JSON])
             return response
         if response[JSON]['likes_remaining'] == 0:
