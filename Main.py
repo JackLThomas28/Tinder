@@ -131,7 +131,7 @@ def get_recs_v2(session):
 def like(session, profile_id):
     response = session.get(HOST_URL + 'like/' + profile_id + '?locale=en-US&s_number=628218027', headers=HEADERS)
     print(profile_id)
-    return response.status_code, json.loads(response.text)
+    return response.status_code, response.json()
 
 
 def dislike(session, profile_id):
