@@ -85,7 +85,7 @@ def likeProfiles(profiles, session):
         if response[STATUS_CODE] is not OK_200 and response[STATUS_CODE] is not TOO_MANY_REQUESTS_429:
             pprint(response[JSON])
             return response
-        if response[JSON]['likes_remaining'] == 0:
+        if response[STATUS_CODE] is OK_200 and response[JSON]['likes_remaining'] == 0:
             return response
         last_response = response
     return last_response
