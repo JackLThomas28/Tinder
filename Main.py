@@ -43,7 +43,7 @@ def main():
         latest_response = likeProfiles(newProfiles, this_session)
         oldProfiles += newProfiles
         while True:
-            while latest_response[JSON]['likes_remaining'] > 0 or latest_response is None:
+            while latest_response is None or latest_response[JSON]['likes_remaining'] > 0:
                 rec_response = get_recs_v2(this_session)
                 newProfiles = collectProfileInfo(rec_response[JSON])
                 latest_response = likeProfiles(newProfiles, this_session)
