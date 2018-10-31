@@ -24,6 +24,11 @@ def get_recommendations(session):
 
 
 def collect_profile_info(response):
+    try:
+        response['data']['results']
+    except:
+        print('The response did not contain any results:', response)
+        return Constants.ERROR
     data = []
     for result in response['data']['results']:
         user = {}
@@ -57,7 +62,7 @@ def like_profiles(profiles, session):
     for profile in profiles:
         response = tinder.like(session, profile['id'])
         if response[Constants.STATUS_CODE] is not 200:
-            print('Error liking the profiles:', response[Constants.STATUS_CODE])
+            print('Error liking profiles:', response[Constants.STATUS_CODE])
             return Constants.ERROR
         print('Sleeping between likes...')
         time.sleep(10)
@@ -66,7 +71,6 @@ def like_profiles(profiles, session):
 
 def main():
     this_session = requests.session()
-
     login(this_session)
 
     recommendations = get_recommendations(this_session)
@@ -74,6 +78,8 @@ def main():
         return Constants.ERROR
 
     new_profiles = collect_profile_info(recommendations)
+    if new_profiles is Constants.ERROR:
+        return Constants.ERROR
     ### Load the previously collected data to add to it
     old_profiles = load_bios()
     old_profiles += new_profiles
@@ -93,11 +99,17 @@ def main():
                 return Constants.ERROR
             
             new_profiles = collect_profile_info(recommendations)
+            ### No one new is around. Wait 12 hours for new recommendations
+            if new_profiles is Constants.ERROR:
+                old_profiles += new_profiles
+                save_bios(old_profiles)
+                break
+
             old_profiles += new_profiles
             save_bios(old_profiles)
         day += 1
         ### Sleep for 12 hours; When more likes are available again
-        print('No more likes. Sleeping...')
+        print('No more likes. Day %d complete. Sleeping...' % day)
         time.sleep(60*60*12)
     print('Program ended')
 
