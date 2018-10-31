@@ -103,6 +103,7 @@ def main():
             if new_profiles is Constants.ERROR:
                 old_profiles += new_profiles
                 save_bios(old_profiles)
+                print('No one new is around')
                 break
 
             old_profiles += new_profiles
