@@ -108,9 +108,9 @@ def main():
 
             old_profiles += new_profiles
             save_bios(old_profiles)
-        day += 1
         ### Sleep for 12 hours; When more likes are available again
         print('No more likes. Day %d complete. Sleeping...' % day)
+        day += 1
         time.sleep(60*60*12)
     print('Program ended')
 
