@@ -59,7 +59,8 @@ def like_profiles(profiles, session):
         if response[Constants.STATUS_CODE] is not 200:
             print('Error liking the profiles:', response[Constants.STATUS_CODE])
             return Constants.ERROR
-        time.sleep(60)
+        print('Sleeping between likes...')
+        time.sleep(10)
     return response[Constants.JSON]['likes_remaining']
 
 
@@ -94,9 +95,6 @@ def main():
             new_profiles = collect_profile_info(recommendations)
             old_profiles += new_profiles
             save_bios(old_profiles)
-
-            print("Sleeping in between likes")
-            time.sleep(10)
         day += 1
         ### Sleep for 12 hours; When more likes are available again
         print('No more likes. Sleeping...')
