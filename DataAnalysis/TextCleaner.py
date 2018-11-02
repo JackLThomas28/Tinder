@@ -3,10 +3,13 @@ import sys
 sys.path.append('/Users/jackthomas/Documents/School/Fall2018/cs4320 - Information Retrieval/Project/Tinder/Helpers/')
 import fileIO
 import string
+import re
 # nltk.download('punkt')
 # nltk.download('stopwords')
 
 APOSTRAPHE = '\u2019'
+EMOIJI_REGEX = r'\\u\S{4}'
+EMOTICONS_REGEX = r'[\U0001f601-\U0001f64f]'
 
 
 def tokenize(data):
@@ -20,10 +23,16 @@ def make_lowercase(data):
 def remove_punctuation(data):
     table = str.maketrans('', '', string.punctuation)
     data = [word.translate(table) for word in data]
-    ### Remove apostraphe not caught by string.punctuation
+    ### Remove apostraphes not caught by string.punctuation
     data = [word for word in data if word != APOSTRAPHE]
     ### Remove any empty strings
     return [word for word in data if word != '']
+
+
+def remove_emojis(data):
+    result = [re.search(EMOTICONS_REGEX, word) for word in data]
+    # result = [re.match(EMOIJI_REGEX, word) for word in data]
+    print(result)
 
 
 def remove_stop_words(data):
@@ -35,6 +44,7 @@ def clean_text(data, attribute):
     text = [tokenize(data[i][attribute]) for i in range(len(data))]
     text = [make_lowercase(entry) for entry in text]
     text = [remove_punctuation(entry) for entry in text]
+    [remove_emojis(entry) for entry in text]
     text = [remove_stop_words(entry) for entry in text]
     return text
 
