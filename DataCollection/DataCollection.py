@@ -47,13 +47,13 @@ def collect_profile_info(response):
 
 def load_bios():
     data = None
-    with open('GirlsTinderProfiles.json', 'r') as infile:
+    with open('./GirlsTinderProfiles.json', 'r') as infile:
         data = json.load(infile)
     return data
 
 
 def save_bios(data):
-    with open('GirlsTinderProfiles.json', 'w') as outfile:
+    with open('./GirlsTinderProfiles.json', 'w') as outfile:
         json.dump(data, outfile)
 
 
@@ -95,7 +95,7 @@ def main():
         if day % 2 == 0:
             refresh_auth_token(this_session)
         likes_remaining = 100
-         
+
         while likes_remaining > 0:
             likes_remaining = like_profiles(new_profiles, this_session)
             if likes_remaining is Constants.ERROR:
