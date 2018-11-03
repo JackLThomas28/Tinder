@@ -69,6 +69,10 @@ def like_profiles(profiles, session):
     return response[Constants.JSON]['likes_remaining']
 
 
+def refresh_auth_token(session):
+    login(session)
+
+
 def main():
     this_session = requests.session()
     login(this_session)
@@ -88,7 +92,10 @@ def main():
     ### Run the program for 5 days
     day = 1
     while day < 6:
-        likes_remaining = 100 
+        if day % 2 == 0:
+            refresh_auth_token(this_session)
+        likes_remaining = 100
+         
         while likes_remaining > 0:
             likes_remaining = like_profiles(new_profiles, this_session)
             if likes_remaining is Constants.ERROR:
