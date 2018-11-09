@@ -20,7 +20,7 @@ def login(session):
 def get_recommendations(session):
     response = Tinder.get_recs_v2(session)
     if response[Constants.STATUS_CODE] is not 200:
-        print('Error retreiving recommendations:', response[Constants.STATUS_CODE])
+        print('Error retrieving recommendations:', response[Constants.STATUS_CODE])
         return Constants.ERROR
     else:
         return response[Constants.JSON]
@@ -34,7 +34,7 @@ def collect_profile_info(response):
         return Constants.ERROR
     data = []
     for result in response['data']['results']:
-        user = {}
+        user = dict()
         user['id'] = result['user']['_id']
         user['bio'] = result['user']['bio']
         user['birth_date'] = result['user']['birth_date']
