@@ -1,13 +1,12 @@
 import nltk
-import sys
-sys.path.append('/Users/jackthomas/Documents/School/Tinder/Helpers')
-import fileIO
+from Helpers import fileIO
 import string
 import re
+# sys.path.append('/Users/jackthomas/Documents/School/Tinder/Helpers')
 # nltk.download('punkt')
 # nltk.download('stopwords')
 
-APOSTRAPHE = '\u2019'
+APOSTROPHE = '\u2019'
 EMOTICONS_REGEX = r'[\U0001f600-\U0001f64f]+'
 DINGBATS_REGEX = r'[\U00002702-\U000027b0]+'
 TRANSPORT_AND_MAP_REGEX = r'[\U0001f680-\U0001f6c0]+'
@@ -27,7 +26,7 @@ def remove_punctuation(data):
     table = str.maketrans('', '', string.punctuation)
     data = [word.translate(table) for word in data]
     ### Remove apostraphes not caught by string.punctuation
-    return [word for word in data if word != APOSTRAPHE]
+    return [word for word in data if word != APOSTROPHE]
 
 
 def remove_emojis(data):
