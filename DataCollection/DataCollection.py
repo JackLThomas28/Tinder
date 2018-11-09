@@ -1,7 +1,5 @@
 import requests
 import Constants
-import json
-from pprint import pprint
 from Helpers import fileIO
 import time
 import Tinder
