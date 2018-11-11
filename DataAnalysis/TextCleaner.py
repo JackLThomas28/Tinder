@@ -2,7 +2,7 @@ import nltk
 from Helpers import fileIO
 import string
 import re
-# sys.path.append('/Users/jackthomas/Documents/School/Tinder/Helpers')
+
 # nltk.download('punkt')
 # nltk.download('stopwords')
 
