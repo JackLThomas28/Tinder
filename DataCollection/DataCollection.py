@@ -1,6 +1,6 @@
 import requests
 import Constants
-from Helpers import fileIO
+import Helpers.fileIO as fileIO
 import time
 import Tinder
 
