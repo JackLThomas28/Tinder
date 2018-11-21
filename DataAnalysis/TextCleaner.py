@@ -70,4 +70,4 @@ def main():
     print(clean_bios)
 
 
-main()
+# main()
