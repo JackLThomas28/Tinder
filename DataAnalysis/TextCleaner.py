@@ -51,7 +51,13 @@ def remove_empty_strings(data):
 
 def remove_stop_words(data):
     stop_words = set(nltk.corpus.stopwords.words('english'))
-    return [word for word in data if not word in stop_words]
+    stop_words.add('nt')
+    stop_words.add('na')
+    return [word for word in data if word not in stop_words]
+
+
+def remove_numbers(data):
+    return [word for word in data if not word.isdigit()]
 
 
 def clean_text(data, attribute):
@@ -61,6 +67,7 @@ def clean_text(data, attribute):
     text = [remove_emojis(entry) for entry in text]
     text = [remove_empty_strings(entry) for entry in text]
     text = [remove_stop_words(entry) for entry in text]
+    text = [remove_numbers(entry) for entry in text]
     return text
 
 
