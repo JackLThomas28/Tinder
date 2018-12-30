@@ -18,7 +18,8 @@ This project collects information from Tinder profiles, analyzes the biography s
 4. "Like" each recommended profile.
 5. Repeat steps 2 - 3 until no more likes available.
 6. Repeat steps 2 - 5 when more likes are available (every 12 hours).  
-Collection Radius:
+### Collection Radius:
+Women within a 100 mile radius of Logan, UT from the ages of 18+
 <img src="collection_radius.png" alt="Collection Radius" width = 75% height=auto/>
 
 ### Data Analysis
