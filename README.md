@@ -17,7 +17,10 @@ This project collects information from Tinder profiles, analyzes the biography s
 3. Save the biography text to a JSON file.
 4. "Like" each recommended profile.
 5. Repeat steps 2 - 3 until no more likes available.
-6. Repeat steps 2 - 5 when more likes are available (every 12 hours).
+6. Repeat steps 2 - 5 when more likes are available (every 12 hours).  
+Collection Radius:
+<img src="collection_radius.png" alt="Collection Radius" width = 75% height=auto/>
+
 ### Data Analysis
 1. Preprocess the text (Remove: Stop Words, Punctuation, Emojis, and Numbers).
 2. Feature extraction from the documents (Each Tinder profile is a document): TF-IDF.
