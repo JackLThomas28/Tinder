@@ -8,7 +8,7 @@ This project collects information from Tinder profiles, analyzes the biography s
 ### Collection Statistics
 * 2790 total profiles collected
 * 2060 profiles with usable biography text
-![](no_bio_percentage.png | width=50)
+<img src="no_bio_percentage.png" alt="No Bio Percentage" width=50% height=auto/>
 
 ## Procedure
 ### Data Collection
