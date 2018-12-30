@@ -3,12 +3,12 @@ This project collects information from Tinder profiles, analyzes the biography s
 
 ## Results
 ### Top 5 Topics Expressed
-![Likes, Good Time, Adventure, Misc. Interests, Snapchat and Instagram](topics.png)  
+![](topics.png)  
 
 ### Collection Statistics
 * 2790 total profiles collected
 * 2060 profiles with usable biography text
-![26% No Bio vs. 74% Bio](no_bio_percentage.png | width=50)
+![](no_bio_percentage.png | width=50)
 
 ## Procedure
 ### Data Collection
