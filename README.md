@@ -1,5 +1,7 @@
 # Machine Learning with Tinder - Information Retrieval (CS4320)
-This project collects information from Tinder profiles, analyzes the biography section text, and applies clustering to determine popular topics expressed.
+For those of you whom aren't familiar, Tinder is a popular online dating platform typically used on mobile devices. A user is presented with pictures and other information about local singles allowing the user to "like" or "pass" on their profile.  
+This project collects information from Tinder profiles, analyzes the biography section text, and applies clustering to determine popular topics expressed.  
+Expansion on this project could include attempting to compose an "optimal" profile to maximize matches based on the collected information.
 
 ## Results
 ### Top 5 Topics Expressed
